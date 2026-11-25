@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Хочу больше: твой навигатор по старту на госслужбе</title>
+    <!-- Подключение Google Fonts: Unbounded для акцентных заголовков и Manrope для легкого чтения -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Подключение Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                        display: ['Unbounded', 'sans-serif'],
+                    },
+                    colors: {
+                        cream: '#F7F4EC',
+                        creamDark: '#EDE8DC',
+                        navy: '#0F294A',
+                        navyLight: '#164E78',
+                        skySoft: '#DCEAF5',
+                        skyAccent: '#3B82F6',
+                        amberWarm: '#F59E0B',
+                        emeraldSoft: '#10B981',
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 30px -10px rgba(15, 41, 74, 0.08)',
+                        'card': '0 4px 20px -2px rgba(15, 41, 74, 0.06)',
+                        'glow': '0 10px 25px -5px rgba(22, 78, 120, 0.25)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Базовые стили и кастомные улучшения */
+        body {
+            background-color: #F7F4EC;
+            color: #0F294A;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Скрытие скроллбара для горизонтальной навигации на мобильных */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Плавные переходы для интерактивных элементов */
+        .tab-btn {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Анимация появления контента */
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-up {
+            animation: fadeSlideUp 0.35s ease-out forwards;
+        }
+
+        /* Стили для 3D-переворота карточек мифов (опционально с фоллбэком на плавную смену) */
+        .myth-card-inner {
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+        }
+
+        /* Кастомный чекбокс */
+        .custom-checkbox:checked + div {
+            background-color: #164E78;
+            border-color: #164E78;
+        }
+        .custom-checkbox:checked + div svg {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Стили для печати и сохранения в PDF */
+        @media print {
+            body {
+                background-color: #FFFFFF !important;
+                color: #0F294A !important;
+                font-size: 11pt;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-break-inside {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            section {
+                padding-top: 1.5rem !important;
+                padding-bottom: 1.5rem !important;
+            }
+            .shadow-soft, .shadow-card, .shadow-glow {
+                box-shadow: none !important;
+                border: 1px solid #CBD5E1 !important;
+            }
+            a[href^="http"]::after {
+                content: " (" attr(href) ")";
+                font-size: 8pt;
+                color: #475569;
+                word-break: break-all;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-navyLight selection:text-white">
+
+    <!-- Липкая верхняя панель навигации -->
+    <header class="sticky top-0 z-50 bg-cream/90 backdrop-blur-md border-b border-navy/10 no-print">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6">
+            <div class="flex items-center justify-between h-14 sm:h-16 gap-3">
+                <!-- Лого-блок -->
+                <a href="#top" class="flex items-center gap-2 shrink-0 group">
+                    <div class="w-8 h-8 rounded-xl bg-navy text-cream flex items-center justify-center font-display font-bold text-sm group-hover:bg-navyLight transition-colors">
+                        ГС
+                    </div>
+                    <span class="font-display font-bold text-xs sm:text-sm tracking-tight text-navy">
+                        ХОЧУ БОЛЬШЕ
+                    </span>
+                </a>
+
+                <!-- Горизонтальное меню-якоря -->
+                <nav class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-1">
+                    <a href="#power" class="px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-navy/75 hover:text-navy hover:bg-skySoft/70 whitespace-nowrap transition-colors">Как устроена власть</a>
+                    <a href="#myths" class="px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-navy/75 hover:text-navy hover:bg-skySoft/70 whitespace-nowrap transition-colors">Мифы vs Реальность</a>
+                    <a href="#tracks" class="px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-navy/75 hover:text-navy hover:bg-skySoft/70 whitespace-nowrap transition-colors">4 трека профессий</a>
+                    <a href="#admission" class="px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-navy/75 hover:text-navy hover:bg-skySoft/70 whitespace-nowrap transition-colors">ЕГЭ и вузы</a>
+                    <a href="#practice" class="px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-navy/75 hover:text-navy hover:bg-skySoft/70 whitespace-nowrap transition-colors">Практика и лифт</a>
+                    <a href="#checklist" class="px-3 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-navy text-cream hover:bg-navyLight whitespace-nowrap transition-colors">Чек-лист</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 1. ОБЛОЖКА (HERO-БЛОК) -->
+    <section id="top" class="pt-8 pb-12 sm:pt-14 sm:pb-16 px-4 sm:px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="relative overflow-hidden rounded-[2rem] bg-navy text-cream p-6 sm:p-10 md:p-14 shadow-glow">
+                <!-- Декоративные фоновые элементы -->
+                <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-navyLight/60 blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-skyAccent/20 blur-3xl pointer-events-none"></div>
+
+                <div class="relative z-10">
+                    <!-- Бейджи -->
+                    <div class="flex flex-wrap items-center gap-2.5 mb-6 sm:mb-8">
+                        <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-sm border border-white/15 text-xs sm:text-sm font-semibold text-skySoft">
+                            <span class="w-2 h-2 rounded-full bg-amberWarm animate-pulse"></span>
+                            ГосСтарт × РЕСУРС России (РАНХиГС)
+                        </span>
+                        <span class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-skySoft text-navy text-xs sm:text-sm font-bold">
+                            Гайд для 9–11 классов
+                        </span>
+                    </div>
+
+                    <!-- Заголовок -->
+                    <h1 class="font-display font-bold text-2xl sm:text-4xl md:text-5xl leading-[1.15] tracking-tight mb-5 sm:mb-6 max-w-4xl">
+                        Хочу больше: твой навигатор по&nbsp;старту на&nbsp;госслужбе
+                    </h1>
+
+                    <!-- Подзаголовок -->
+                    <p class="text-base sm:text-lg md:text-xl text-cream/85 leading-relaxed max-w-3xl mb-8 sm:mb-10 font-normal">
+                        Честный разбор без скучной теории из учебника обществознания: кто на самом деле управляет страной и городом, кем там работать и как попасть в команду ещё во время учёбы.
+                    </p>
+
+                    <!-- Быстрая навигация-карточки -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3 no-print">
+                        <a href="#power" class="group p-3.5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all flex flex-col justify-between">
+                            <span class="text-xs font-bold text-skySoft/80 mb-1">01</span>
+                            <span class="text-xs sm:text-sm font-bold leading-snug group-hover:translate-x-0.5 transition-transform">Уровни власти</span>
+                        </a>
+                        <a href="#myths" class="group p-3.5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all flex flex-col justify-between">
+                            <span class="text-xs font-bold text-skySoft/80 mb-1">02</span>
+                            <span class="text-xs sm:text-sm font-bold leading-snug group-hover:translate-x-0.5 transition-transform">Мифы и факты</span>
+                        </a>
+                        <a href="#tracks" class="group p-3.5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all flex flex-col justify-between">
+                            <span class="text-xs font-bold text-skySoft/80 mb-1">03</span>
+                            <span class="text-xs sm:text-sm font-bold leading-snug group-hover:translate-x-0.5 transition-transform">4 трека карьеры</span>
+                        </a>
+                        <a href="#admission" class="group p-3.5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all flex flex-col justify-between">
+                            <span class="text-xs font-bold text-skySoft/80 mb-1">04</span>
+                            <span class="text-xs sm:text-sm font-bold leading-snug group-hover:translate-x-0.5 transition-transform">ЕГЭ и топ-вузы</span>
+                        </a>
+                        <a href="#practice" class="group p-3.5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all flex flex-col justify-between">
+                            <span class="text-xs font-bold text-skySoft/80 mb-1">05</span>
+                            <span class="text-xs sm:text-sm font-bold leading-snug group-hover:translate-x-0.5 transition-transform">Кейс и стажировки</span>
+                        </a>
+                        <a href="#checklist" class="group p-3.5 rounded-2xl bg-amberWarm text-navy hover:bg-amber-400 transition-all flex flex-col justify-between">
+                            <span class="text-xs font-extrabold text-navy/70 mb-1">06</span>
+                            <span class="text-xs sm:text-sm font-extrabold leading-snug group-hover:translate-x-0.5 transition-transform">План на год →</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. КАК УСТРОЕНА ВЛАСТЬ: КТО ЗА ЧТО ОТВЕЧАЕТ -->
+    <section id="power" class="py-10 sm:py-14 px-4 sm:px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="mb-6 sm:mb-8">
+                <span class="inline-block px-3 py-1 rounded-full bg-skySoft text-navyLight text-xs font-extrabold uppercase tracking-wider mb-3">
+                    Раздел 01 · Карта решений
+                </span>
+                <h2 class="font-display font-bold text-2xl sm:text-3xl text-navy mb-2">
+                    Как устроена власть: кто за что отвечает
+                </h2>
+                <p class="text-navy/75 text-sm sm:text-base max-w-2xl">
+                    Чтобы понимать, куда идти работать и кому писать, если возле школы не горят фонари, достаточно разобраться в трёх уровнях. Нажимай на вкладки или смотри все три сразу.
+                </p>
+            </div>
+
+            <!-- Переключатель вида для мобильных и десктопа -->
+            <div class="flex flex-wrap gap-2 mb-6 no-print" role="tablist">
+                <button onclick="selectPowerTab('all')" id="power-tab-all" class="tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-navy text-cream shadow-sm">
+                    Все 3 уровня
+                </button>
+                <button onclick="selectPowerTab('federal')" id="power-tab-federal" class="tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white text-navy hover:bg-skySoft/60 border border-navy/10">
+                    🏛️ Федеральный
+                </button>
+                <button onclick="selectPowerTab('regional')" id="power-tab-regional" class="tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white text-navy hover:bg-skySoft/60 border border-navy/10">
+                    🗺️ Региональный
+                </button>
+                <button onclick="selectPowerTab('municipal')" id="power-tab-municipal" class="tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white text-navy hover:bg-skySoft/60 border border-navy/10">
+                    🏘️ Муниципальный
+                </button>
+            </div>
+
+            <!-- Карточки уровней власти -->
+            <div id="power-cards-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <!-- Федеральный -->
+                <article data-power="federal" class="power-card print-break-inside rounded-3xl bg-white p-6 sm:p-7 shadow-card border border-navy/10 flex flex-col justify-between transition-all hover:-translate-y-1">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="w-11 h-11 rounded-2xl bg-navy text-cream flex items-center justify-center text-xl">🏛️</span>
+                            <span class="px-3 py-1 rounded-full bg-skySoft text-navyLight text-xs font-bold">Масштаб: вся страна</span>
+                        </div>
+                        <h3 class="font-display font-bold text-lg sm:text-xl text-navy mb-2">
+                            Федеральный уровень
+                        </h3>
+                        <p class="text-xs font-bold text-navyLight uppercase tracking-wide mb-3">
+                            Министерства, ведомства, госкорпорации
+                        </p>
+                        <p class="text-sm sm:text-base text-navy/80 leading-relaxed mb-5">
+                            Задают общие правила игры для всей страны, распределяют федеральный бюджет и запускают масштабные технологические и социальные проекты.
+                        </p>
+                    </div>
+                    <div class="rounded-2xl bg-cream p-4 border border-navy/5">
+                        <p class="text-xs font-extrabold text-navy uppercase tracking-wider mb-2">Примеры из твоей жизни:</p>
+                        <ul class="space-y-1.5 text-xs sm:text-sm text-navy/85">
+                            <li class="flex items-start gap-2"><span class="text-navyLight font-bold">•</span> Единые стандарты ЕГЭ и олимпиад</li>
+                            <li class="flex items-start gap-2"><span class="text-navyLight font-bold">•</span> Суперсервисы на портале «Госуслуги»</li>
+                            <li class="flex items-start gap-2"><span class="text-navyLight font-bold">•</span> Космическая программа («Роскосмос») и нацпроекты</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <!-- Региональный -->
+                <article data-power="regional" class="power-card print-break-inside rounded-3xl bg-white p-6 sm:p-7 shadow-card border border-navy/10 flex flex-col justify-between transition-all hover:-translate-y-1">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="w-11 h-11 rounded-2xl bg-navyLight text-cream flex items-center justify-center text-xl">🗺️</span>
+                            <span class="px-3 py-1 rounded-full bg-skySoft text-navyLight text-xs font-bold">Масштаб: область / край</span>
+                        </div>
+                        <h3 class="font-display font-bold text-lg sm:text-xl text-navy mb-2">
+                            Региональный уровень
+                        </h3>
+                        <p class="text-xs font-bold text-navyLight uppercase tracking-wide mb-3">
+                            Правительство региона, профильные министерства
+                        </p>
+                        <p class="text-sm sm:text-base text-navy/80 leading-relaxed mb-5">
+                            Адаптируют федеральные решения под особенности своего субъекта и отвечают за инфраструктуру, которая связывает города и районы.
+                        </p>
+                    </div>
+                    <div class="rounded-2xl bg-cream p-4 border border-navy/5">
+                        <p class="text-xs font-extrabold text-navy uppercase tracking-wider mb-2">Примеры из твоей жизни:</p>
+                        <ul class="space-y-1.5 text-xs sm:text-sm text-navy/85">
+                            <li class="flex items-start gap-2"><span class="text-navyLight font-bold">•</span> Поликлиники, больницы и колледжи</li>
+                            <li class="flex items-start gap-2"><span class="text-navyLight font-bold">•</span> Трассы между городами и пригородный транспорт</li>
+                            <li class="flex items-start gap-2"><span class="text-navyLight font-bold">•</span> Региональный туризм и выплаты семьям</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <!-- Муниципальный -->
+                <article data-power="municipal" class="power-card print-break-inside rounded-3xl bg-white p-6 sm:p-7 shadow-card border border-navy/10 flex flex-col justify-between transition-all hover:-translate-y-1">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="w-11 h-11 rounded-2xl bg-skyAccent text-white flex items-center justify-center text-xl">🏘️</span>
+                            <span class="px-3 py-1 rounded-full bg-skySoft text-navyLight text-xs font-bold">Масштаб: город / район</span>
+                        </div>
+                        <h3 class="font-display font-bold text-lg sm:text-xl text-navy mb-2">
+                            Муниципальный уровень
+                        </h3>
+                        <p class="text-xs font-bold text-navyLight uppercase tracking-wide mb-3">
+                            Администрация города, округа или района
+                        </p>
+                        <p class="text-sm sm:text-base text-navy/80 leading-relaxed mb-5">
+                            Самая близкая к жителям власть (формально — местное самоуправление). От её скорости и точности зависит твой комфорт каждый день.
+                        </p>
+                    </div>
+                    <div class="rounded-2xl bg-cream p-4 border border-navy/5">
+                        <p class="text-xs font-extrabold text-navy uppercase tracking-wider mb-2">Примеры из твоей жизни:</p>
+                        <ul class="space-y-1.5 text-xs sm:text-sm text-navy/85">
+                            <li class="flex items-start gap-2"><span class="text-navyLight font-bold">•</span> Фонари, тротуар и зебра по дороге в школу</li>
+                            <li class="flex items-start gap-2"><span class="text-navyLight font-bold">•</span> Расписание городских автобусов</li>
+                            <li class="flex items-start gap-2"><span class="text-navyLight font-bold">•</span> Благоустройство парков, скверов и уборка дворов</li>
+                        </ul>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. МИФЫ VS РЕАЛЬНОСТЬ -->
+    <section id="myths" class="py-10 sm:py-14 px-4 sm:px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
+                <div>
+                    <span class="inline-block px-3 py-1 rounded-full bg-skySoft text-navyLight text-xs font-extrabold uppercase tracking-wider mb-3">
+                        Раздел 02 · Проверка стереотипов
+                    </span>
+                    <h2 class="font-display font-bold text-2xl sm:text-3xl text-navy mb-2">
+                        Мифы vs Реальность
+                    </h2>
+                    <p class="text-navy/75 text-sm sm:text-base max-w-xl">
+                        Нажми на любую карточку, чтобы перевернуть её и узнать, как всё устроено на самом деле.
+                    </p>
+                </div>
+                <button onclick="toggleAllMyths()" id="toggle-all-myths-btn" class="self-start sm:self-auto px-4 py-2 rounded-xl bg-white hover:bg-skySoft/60 border border-navy/15 text-xs sm:text-sm font-bold text-navy transition-colors no-print">
+                    Раскрыть все факты
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <!-- Миф 1 -->
+                <div onclick="flipMyth(1)" id="myth-card-1" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')flipMyth(1)" class="print-break-inside cursor-pointer rounded-3xl p-6 sm:p-7 bg-white border-2 border-navy/10 hover:border-navyLight/40 shadow-card transition-all flex flex-col justify-between min-h-[250px] select-none group">
+                    <div id="myth-front-1" class="flex flex-col justify-between h-full">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-3 py-1 rounded-full bg-rose-100 text-rose-800 text-xs font-extrabold uppercase">Миф #1</span>
+                                <span class="text-xs font-semibold text-navy/50 group-hover:text-navy transition-colors no-print">Нажми, чтобы проверить ↻</span>
+                            </div>
+                            <h3 class="font-display font-bold text-lg sm:text-xl text-navy leading-snug">
+                                «Там только перекладывают бумажки в серых кабинетах»
+                            </h3>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-navy/10 flex items-center justify-between text-xs font-bold text-navyLight no-print">
+                            <span>Узнать, как на самом деле</span>
+                            <span class="w-7 h-7 rounded-full bg-skySoft flex items-center justify-center group-hover:translate-x-1 transition-transform">→</span>
+                        </div>
+                    </div>
+
+                    <div id="myth-back-1" class="hidden flex-col justify-between h-full animate-fade-up">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-extrabold uppercase">Реальность #1</span>
+                                <span class="text-xs font-semibold text-cream/70 no-print">Вернуть миф ↺</span>
+                            </div>
+                            <p class="text-sm sm:text-base text-cream leading-relaxed font-medium">
+                                Сегодня госсектор — это запуск цифровых продуктов («Госуслуги», «Моя школа»), современная урбанистика, молодёжные форумы, антикризисное управление и аналитика больших данных.
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-white/15 text-xs text-skySoft font-semibold">
+                            Бумажный документооборот почти полностью ушёл в «цифру».
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Миф 2 -->
+                <div onclick="flipMyth(2)" id="myth-card-2" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')flipMyth(2)" class="print-break-inside cursor-pointer rounded-3xl p-6 sm:p-7 bg-white border-2 border-navy/10 hover:border-navyLight/40 shadow-card transition-all flex flex-col justify-between min-h-[250px] select-none group">
+                    <div id="myth-front-2" class="flex flex-col justify-between h-full">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-3 py-1 rounded-full bg-rose-100 text-rose-800 text-xs font-extrabold uppercase">Миф #2</span>
+                                <span class="text-xs font-semibold text-navy/50 group-hover:text-navy transition-colors no-print">Нажми, чтобы проверить ↻</span>
+                            </div>
+                            <h3 class="font-display font-bold text-lg sm:text-xl text-navy leading-snug">
+                                «Туда берут только по знакомству и связям»
+                            </h3>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-navy/10 flex items-center justify-between text-xs font-bold text-navyLight no-print">
+                            <span>Узнать, как на самом деле</span>
+                            <span class="w-7 h-7 rounded-full bg-skySoft flex items-center justify-center group-hover:translate-x-1 transition-transform">→</span>
+                        </div>
+                    </div>
+
+                    <div id="myth-back-2" class="hidden flex-col justify-between h-full animate-fade-up">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-extrabold uppercase">Реальность #2</span>
+                                <span class="text-xs font-semibold text-cream/70 no-print">Вернуть миф ↺</span>
+                            </div>
+                            <p class="text-sm sm:text-base text-cream leading-relaxed font-medium">
+                                Вход открыт через прозрачные конкурсы на портале Госслужбы, молодёжные кадровые резервы и федеральную программу «ГосСтарт.Стажировки», куда ежегодно подают тысячи заявок студенты со всей страны.
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-white/15 text-xs text-skySoft font-semibold">
+                            Решают твои кейсы, знания и портфолио, а не фамилия.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Миф 3 -->
+                <div onclick="flipMyth(3)" id="myth-card-3" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')flipMyth(3)" class="print-break-inside cursor-pointer rounded-3xl p-6 sm:p-7 bg-white border-2 border-navy/10 hover:border-navyLight/40 shadow-card transition-all flex flex-col justify-between min-h-[250px] select-none group">
+                    <div id="myth-front-3" class="flex flex-col justify-between h-full">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-3 py-1 rounded-full bg-rose-100 text-rose-800 text-xs font-extrabold uppercase">Миф #3</span>
+                                <span class="text-xs font-semibold text-navy/50 group-hover:text-navy transition-colors no-print">Нажми, чтобы проверить ↻</span>
+                            </div>
+                            <h3 class="font-display font-bold text-lg sm:text-xl text-navy leading-snug">
+                                «Молодым там не дают решать, придётся 10 лет носить кофе»
+                            </h3>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-navy/10 flex items-center justify-between text-xs font-bold text-navyLight no-print">
+                            <span>Узнать, как на самом деле</span>
+                            <span class="w-7 h-7 rounded-full bg-skySoft flex items-center justify-center group-hover:translate-x-1 transition-transform">→</span>
+                        </div>
+                    </div>
+
+                    <div id="myth-back-3" class="hidden flex-col justify-between h-full animate-fade-up">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-extrabold uppercase">Реальность #3</span>
+                                <span class="text-xs font-semibold text-cream/70 no-print">Вернуть миф ↺</span>
+                            </div>
+                            <p class="text-sm sm:text-base text-cream leading-relaxed font-medium">
+                                Средний возраст команд в региональных проектных офисах и ЦУРах (Центрах управления регионом) — 23–28 лет. Студенты и молодые специалисты уже на старте ведут реальные проекты для регионов.
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-white/15 text-xs text-skySoft font-semibold">
+                            Свежий взгляд и скорость работы ценятся на вес золота.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. КЕМ РАБОТАТЬ В ГОССЕКТОРЕ: 4 ТРЕКА ПО ТВОИМ СИЛЬНЫМ СТОРОНАМ -->
+    <section id="tracks" class="py-10 sm:py-14 px-4 sm:px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="mb-6 sm:mb-8">
+                <span class="inline-block px-3 py-1 rounded-full bg-skySoft text-navyLight text-xs font-extrabold uppercase tracking-wider mb-3">
+                    Раздел 03 · Навигатор профессий
+                </span>
+                <h2 class="font-display font-bold text-2xl sm:text-3xl text-navy mb-2">
+                    Кем работать в госсекторе: 4 трека по твоим сильным сторонам
+                </h2>
+                <p class="text-navy/75 text-sm sm:text-base max-w-2xl">
+                    Госслужба — это не одна профессия «чиновник», а целая экосистема. Выбери, что тебе ближе по складу ума, и посмотри свои задачи и направления в вузе.
+                </p>
+            </div>
+
+            <!-- Интерактивный фильтр треков -->
+            <div class="flex flex-wrap gap-2 mb-6 no-print">
+                <button onclick="filterTracks('all')" id="track-btn-all" class="tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-navy text-cream shadow-sm">
+                    Все 4 трека
+                </button>
+                <button onclick="filterTracks('people')" id="track-btn-people" class="tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white text-navy hover:bg-skySoft/60 border border-navy/10">
+                    🤝 Люди и проекты
+                </button>
+                <button onclick="filterTracks('digital')" id="track-btn-digital" class="tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white text-navy hover:bg-skySoft/60 border border-navy/10">
+                    💻 Цифра и аналитика
+                </button>
+                <button onclick="filterTracks('media')" id="track-btn-media" class="tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white text-navy hover:bg-skySoft/60 border border-navy/10">
+                    🎙️ Слово и медиа
+                </button>
+                <button onclick="filterTracks('law')" id="track-btn-law" class="tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white text-navy hover:bg-skySoft/60 border border-navy/10">
+                    ⚖️ Право и правила
+                </button>
+            </div>
+
+            <!-- Сетка 4 треков -->
+            <div id="tracks-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <!-- Трек 1: Люди и проекты -->
+                <div data-track="people" class="track-card print-break-inside rounded-3xl bg-white p-6 sm:p-7 shadow-card border border-navy/10 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center text-2xl shrink-0">🤝</div>
+                            <div>
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-amber-700">Трек 01</span>
+                                <h3 class="font-display font-bold text-lg sm:text-xl text-navy">Люди и проекты</h3>
+                            </div>
+                        </div>
+                        <p class="text-sm font-semibold text-navyLight bg-skySoft/50 rounded-xl px-3.5 py-2 mb-4">
+                            Для тебя, если любишь организовывать, договариваться и менять среду вокруг.
+                        </p>
+                        <div class="mb-5">
+                            <p class="text-xs font-extrabold text-navy/60 uppercase tracking-wider mb-1.5">Чем заниматься:</p>
+                            <p class="text-sm sm:text-base text-navy/85 leading-relaxed">
+                                Развитие городов и транспорта, образовательные и молодёжные программы, социальные проекты, туризм и работа проектных офисов.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-navy/10">
+                        <p class="text-xs font-extrabold text-navy/60 uppercase tracking-wider mb-2">Куда смотреть в вузе:</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-3 py-1 rounded-lg bg-cream text-navy text-xs font-bold border border-navy/10">Государственное и муниципальное управление (ГМУ)</span>
+                            <span class="px-3 py-1 rounded-lg bg-cream text-navy text-xs font-bold border border-navy/10">Менеджмент</span>
+                            <span class="px-3 py-1 rounded-lg bg-cream text-navy text-xs font-bold border border-navy/10">Урбанистика</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Трек 2: Цифра и аналитика -->
+                <div data-track="digital" class="track-card print-break-inside rounded-3xl bg-white p-6 sm:p-7 shadow-card border border-navy/10 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-900 flex items-center justify-center text-2xl shrink-0">💻</div>
+                            <div>
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-blue-700">Трек 02</span>
+                                <h3 class="font-display font-bold text-lg sm:text-xl text-navy">Цифра и аналитика</h3>
+                            </div>
+                        </div>
+                        <p class="text-sm font-semibold text-navyLight bg-skySoft/50 rounded-xl px-3.5 py-2 mb-4">
+                            Для тебя, если дружишь с математикой, кодом, таблицами и данными.
+                        </p>
+                        <div class="mb-5">
+                            <p class="text-xs font-extrabold text-navy/60 uppercase tracking-wider mb-1.5">Чем заниматься:</p>
+                            <p class="text-sm sm:text-base text-navy/85 leading-relaxed">
+                                Создание цифровых госсервисов, защита данных, аналитика социально-экономических показателей, умный город и бюджетное планирование.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-navy/10">
+                        <p class="text-xs font-extrabold text-navy/60 uppercase tracking-wider mb-2">Куда смотреть в вузе:</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-3 py-1 rounded-lg bg-cream text-navy text-xs font-bold border border-navy/10">Бизнес-информатика</span>
+                            <span class="px-3 py-1 rounded-lg bg-cream text-navy text-xs font-bold border border-navy/10">Прикладная математика и информатика</span>
+                            <span class="px-3 py-1 rounded-lg bg-cream text-navy text-xs font-bold border border-navy/10">Экономика</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Трек 3: Слово и медиа -->
+                <div data-track="media" class="track-card print-break-inside rounded-3xl bg-white p-6 sm:p-7 shadow-card border border-navy/10 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-purple-100 text-purple-900 flex items-center justify-center text-2xl shrink-0">🎙️</div>
+                            <div>
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-purple-700">Трек 03</span>
+                                <h3 class="font-display font-bold text-lg sm:text-xl text-navy">Слово и медиа</h3>
+                            </div>
+                        </div>
+                        <p class="text-sm font-semibold text-navyLight bg-skySoft/50 rounded-xl px-3.5 py-2 mb-4">
+                            Для тебя, если умеешь писать, снимать, объяснять сложное простыми словами.
+                        </p>
+                        <div class="mb-5">
+                            <p class="text-xs font-extrabold text-navy/60 uppercase tracking-wider mb-1.5">Чем заниматься:</p>
+                            <p class="text-sm sm:text-base text-navy/85 leading-relaxed">
+                                Пресс-службы ведомств, ведение соцсетей, работа с обратной связью жителей в ЦУРах, организация крупных форумов и спецпроектов.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-navy/10">
+                        <p class="text-xs font-extrabold text-navy/60 uppercase tracking-wider mb-2">Куда смотреть в вузе:</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-3 py-1 rounded-lg bg-cream text-navy text-xs font-bold border border-navy/10">Реклама и связи с общественностью (PR)</span>
+                            <span class="px-3 py-1 rounded-lg bg-cream text-navy text-xs font-bold border border-navy/10">Журналистика</span>
+                            <span class="px-3 py-1 rounded-lg bg-cream text-navy text-xs font-bold border border-navy/10">Медиакоммуникации</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Трек 4: Право и правила -->
+                <div data-track="law" class="track-card print-break-inside rounded-3xl bg-white p-6 sm:p-7 shadow-card border border-navy/10 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-900 flex items-center justify-center text-2xl shrink-0">⚖️</div>
+                            <div>
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-700">Трек 04</span>
+                                <h3 class="font-display font-bold text-lg sm:text-xl text-navy">Право и правила</h3>
+                            </div>
+                        </div>
+                        <p class="text-sm font-semibold text-navyLight bg-skySoft/50 rounded-xl px-3.5 py-2 mb-4">
+                            Для тебя, если ценишь порядок, логику и защиту интересов людей.
+                        </p>
+                        <div class="mb-5">
+                            <p class="text-xs font-extrabold text-navy/60 uppercase tracking-wider mb-1.5">Чем заниматься:</p>
+                            <p class="text-sm sm:text-base text-navy/85 leading-relaxed">
+                                Разработка законов и нормативных актов, юридическая экспертиза проектов, госзакупки, антимонопольный контроль и защита прав граждан.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-navy/10">
+                        <p class="text-xs font-extrabold text-navy/60 uppercase tracking-wider mb-2">Куда смотреть в вузе:</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="px-3 py-1 rounded-lg bg-cream text-navy text-xs font-bold border border-navy/10">Юриспруденция</span>
+                            <span class="px-3 py-1 rounded-lg bg-cream text-navy text-xs font-bold border border-navy/10">Политология</span>
+                            <span class="px-3 py-1 rounded-lg bg-cream text-navy text-xs font-bold border border-navy/10">Международные отношения</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. ПОСТУПЛЕНИЕ БЕЗ ПАНИКИ: ЕГЭ, ОЛИМПИАДЫ И ТОП-ПРОГРАММЫ МОСКВЫ -->
+    <section id="admission" class="py-10 sm:py-14 px-4 sm:px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="mb-6 sm:mb-8">
+                <span class="inline-block px-3 py-1 rounded-full bg-skySoft text-navyLight text-xs font-extrabold uppercase tracking-wider mb-3">
+                    Раздел 04 · Стратегия абитуриента
+                </span>
+                <h2 class="font-display font-bold text-2xl sm:text-3xl text-navy mb-2">
+                    Поступление без паники: ЕГЭ, олимпиады и топ-программы Москвы
+                </h2>
+                <p class="text-navy/75 text-sm sm:text-base max-w-2xl">
+                    Проверенная шпаргалка для 9–11 классов: какие предметы сдавать, как забрать БВИ или до +10 баллов к ЕГЭ и куда поступать.
+                </p>
+            </div>
+
+            <!-- 3 колонки: ЕГЭ, Олимпиады, Индивидуальные достижения -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-8">
+                <!-- Карточка ЕГЭ -->
+                <div class="print-break-inside rounded-3xl bg-white p-6 shadow-card border border-navy/10">
+                    <div class="w-10 h-10 rounded-xl bg-navy text-cream flex items-center justify-center font-display font-bold text-sm mb-4">ЕГЭ</div>
+                    <h3 class="font-display font-bold text-lg text-navy mb-2">Какие предметы сдавать</h3>
+                    <p class="text-xs sm:text-sm text-navy/80 leading-relaxed mb-4">
+                        В большинстве вузов комбинация строится так: <strong>Русский язык</strong> (обязательно) + <strong>профильный предмет</strong> (Обществознание или Профильная математика) + <strong>предмет по выбору</strong> вуза/абитуриента.
+                    </p>
+                    <div class="space-y-2 text-xs">
+                        <div class="p-2.5 rounded-xl bg-cream">
+                            <span class="font-extrabold text-navy block">Управленческий и правовой профиль:</span>
+                            <span class="text-navy/80">Русский + Обществознание + История / Иностранный / Проф. математика</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-cream">
+                            <span class="font-extrabold text-navy block">Экономика и цифра в госсекторе:</span>
+                            <span class="text-navy/80">Русский + Проф. математика + Обществознание / Информатика</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка Олимпиады -->
+                <div class="print-break-inside rounded-3xl bg-white p-6 shadow-card border border-navy/10">
+                    <div class="w-10 h-10 rounded-xl bg-amberWarm text-navy flex items-center justify-center font-display font-bold text-sm mb-4">БВИ</div>
+                    <h3 class="font-display font-bold text-lg text-navy mb-2">Олимпиады и льготы</h3>
+                    <p class="text-xs sm:text-sm text-navy/80 leading-relaxed mb-3">
+                        Победа или призёрство дают <strong>поступление без вступительных испытаний (БВИ)</strong> или <strong>100 баллов за ЕГЭ</strong> (при подтверждении профильного ЕГЭ от 75 баллов).
+                    </p>
+                    <ul class="space-y-2 text-xs sm:text-sm text-navy/85">
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-600 font-bold">★</span>
+                            <span><strong>Всероссийская олимпиада (ВсОШ)</strong> — право, обществознание, экономика, история, информатика.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-600 font-bold">★</span>
+                            <span><strong>Перечневые олимпиады РСОШ 1–2 уровня:</strong> «Высшая проба» (НИУ ВШЭ), Олимпиада школьников РАНХиГС, «Ломоносов» (МГУ), «Покори Воробьёвы горы!».</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Карточка Индивидуальные достижения -->
+                <div class="print-break-inside rounded-3xl bg-white p-6 shadow-card border border-navy/10">
+                    <div class="w-10 h-10 rounded-xl bg-emeraldSoft text-white flex items-center justify-center font-display font-bold text-sm mb-4">+10</div>
+                    <h3 class="font-display font-bold text-lg text-navy mb-2">Доп. баллы к ЕГЭ</h3>
+                    <p class="text-xs sm:text-sm text-navy/80 leading-relaxed mb-3">
+                        По правилам приёма вуз может начислить суммарно <strong>до +10 баллов</strong> за индивидуальные достижения:
+                    </p>
+                    <ul class="space-y-2 text-xs sm:text-sm text-navy/85">
+                        <li class="flex items-start gap-2">
+                            <span class="text-emerald-600 font-bold">✓</span>
+                            <span>
+                                <strong>Волонтёрство на <a href="https://dobro.ru/" target="_blank" rel="noopener noreferrer" class="underline decoration-navyLight font-bold text-navyLight hover:text-navy">Добро.рф</a>:</strong> обычно от 10–20 до 100+ верифицированных часов за последние 2–4 года (оформленных не позже чем за 3 месяца до подачи документов).
+                            </span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-emerald-600 font-bold">✓</span>
+                            <span><strong>Аттестат с отличием / медаль</strong>, знак ГТО, итоговое сочинение (в ряде вузов).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-emerald-600 font-bold">✓</span>
+                            <span><strong>Проекты «Движения Первых»</strong> и конкурс <strong>«Большая перемена»</strong>.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Подборка программ в вузах Москвы -->
+            <div class="rounded-[2rem] bg-skySoft/60 border border-navy/10 p-6 sm:p-8">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                    <div>
+                        <h3 class="font-display font-bold text-xl sm:text-2xl text-navy">
+                            Куда поступать в Москве ради карьеры в госсекторе
+                        </h3>
+                        <p class="text-xs sm:text-sm text-navy/75 mt-1">
+                            Сохраняй подборку топовых программ и факультетов — все ссылки ведут прямо на официальные страницы программ.
+                        </p>
+                    </div>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-white text-navy text-xs font-bold shrink-0 self-start">
+                        5 сильных точек старта
+                    </span>
+                </div>
+
+                <div class="space-y-3.5">
+                    <!-- Вуз 1: РАНХиГС -->
+                    <div class="print-break-inside rounded-2xl bg-white p-5 shadow-sm border border-navy/10 hover:border-navyLight transition-all">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div class="space-y-1.5">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="px-2.5 py-0.5 rounded-md bg-navy text-cream text-xs font-bold">РАНХиГС</span>
+                                    <span class="text-xs font-semibold text-navyLight">Президентская академия · 38.03.04 ГМУ</span>
+                                </div>
+                                <h4 class="font-bold text-base sm:text-lg text-navy">
+                                    «Государственное управление и публичная политика в условиях глобальных вызовов „РЕСУРС России“» и программы ИГСУ
+                                </h4>
+                                <p class="text-xs sm:text-sm text-navy/75">
+                                    Флагманский лидерский трек с решением реальных кейсов для правительств регионов с 1 курса, встречами с федеральными спикерами и практикой в органах власти.
+                                </p>
+                            </div>
+                            <div class="flex flex-wrap sm:flex-nowrap gap-2 shrink-0">
+                                <a href="https://www.ranepa.ru/bakalavriat/napravleniya-i-programmy/018789/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-navy hover:bg-navyLight text-cream text-xs sm:text-sm font-bold transition-colors">
+                                    <span>РЕСУРС России</span>
+                                    <span>↗</span>
+                                </a>
+                                <a href="https://igsu.ranepa.ru/bakalavriat/gmu/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-skySoft hover:bg-skySoft/80 text-navy text-xs sm:text-sm font-bold transition-colors">
+                                    <span>ИГСУ ГМУ</span>
+                                    <span>↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Вуз 2: НИУ ВШЭ -->
+                    <div class="print-break-inside rounded-2xl bg-white p-5 shadow-sm border border-navy/10 hover:border-navyLight transition-all">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div class="space-y-1">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="px-2.5 py-0.5 rounded-md bg-navyLight text-cream text-xs font-bold">НИУ ВШЭ</span>
+                                    <span class="text-xs font-semibold text-navyLight">Высшая школа экономики · 38.03.04 ГМУ</span>
+                                </div>
+                                <h4 class="font-bold text-base sm:text-lg text-navy">
+                                    Бакалаврская программа «Государственное и муниципальное управление»
+                                </h4>
+                                <p class="text-xs sm:text-sm text-navy/75">
+                                    Сильная база по аналитике данных, экономике общественного сектора, урбанистике и проектной работе с государственными структурами.
+                                </p>
+                            </div>
+                            <a href="https://www.hse.ru/ba/gmu/about/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-skySoft hover:bg-navy hover:text-cream text-navy text-xs sm:text-sm font-bold transition-colors shrink-0">
+                                <span>Страница программы</span>
+                                <span>↗</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Вуз 3: МГУ -->
+                    <div class="print-break-inside rounded-2xl bg-white p-5 shadow-sm border border-navy/10 hover:border-navyLight transition-all">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div class="space-y-1">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="px-2.5 py-0.5 rounded-md bg-navyLight text-cream text-xs font-bold">МГУ им. М.В. Ломоносова</span>
+                                    <span class="text-xs font-semibold text-navyLight">ФГУ · Бакалавриат</span>
+                                </div>
+                                <h4 class="font-bold text-base sm:text-lg text-navy">
+                                    Факультет государственного управления (ФГУ МГУ)
+                                </h4>
+                                <p class="text-xs sm:text-sm text-navy/75">
+                                    Фундаментальная подготовка управленцев с акцентом на стратегическое планирование, антикризисное управление и государственную политику.
+                                </p>
+                            </div>
+                            <a href="https://spa.msu.ru/postuplenie/bachelor/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-skySoft hover:bg-navy hover:text-cream text-navy text-xs sm:text-sm font-bold transition-colors shrink-0">
+                                <span>Поступление на ФГУ</span>
+                                <span>↗</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Вуз 4: МГИМО -->
+                    <div class="print-break-inside rounded-2xl bg-white p-5 shadow-sm border border-navy/10 hover:border-navyLight transition-all">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div class="space-y-1">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="px-2.5 py-0.5 rounded-md bg-navyLight text-cream text-xs font-bold">МГИМО МИД России</span>
+                                    <span class="text-xs font-semibold text-navyLight">ФУП · Управление и политика</span>
+                                </div>
+                                <h4 class="font-bold text-base sm:text-lg text-navy">
+                                    Факультет управления и политики (ФУП МГИМО)
+                                </h4>
+                                <p class="text-xs sm:text-sm text-navy/75">
+                                    Сочетание государственного управления, политологии, правовой подготовки и глубокого изучения иностранных языков для работы на федеральном и международном уровнях.
+                                </p>
+                            </div>
+                            <a href="https://mgimo.ru/study/faculty/sgp/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-skySoft hover:bg-navy hover:text-cream text-navy text-xs sm:text-sm font-bold transition-colors shrink-0">
+                                <span>Сайт факультета</span>
+                                <span>↗</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Вуз 5: Финансовый университет -->
+                    <div class="print-break-inside rounded-2xl bg-white p-5 shadow-sm border border-navy/10 hover:border-navyLight transition-all">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div class="space-y-1">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="px-2.5 py-0.5 rounded-md bg-navyLight text-cream text-xs font-bold">Финансовый университет</span>
+                                    <span class="text-xs font-semibold text-navyLight">При Правительстве РФ · 38.03.04 ГМУ</span>
+                                </div>
+                                <h4 class="font-bold text-base sm:text-lg text-navy">
+                                    Программы направления «Государственное и муниципальное управление» и «Цифровое государство и экономика»
+                                </h4>
+                                <p class="text-xs sm:text-sm text-navy/75">
+                                    Практико-ориентированное обучение управлению государственными финансами, проектами и цифровой трансформацией госсектора.
+                                </p>
+                            </div>
+                            <a href="https://www.fa.ru/university/structure/scientific-educational-departments/vsu/gmu/materials/bakalavriat/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-skySoft hover:bg-navy hover:text-cream text-navy text-xs sm:text-sm font-bold transition-colors shrink-0">
+                                <span>Программы бакалавриата</span>
+                                <span>↗</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. НЕ УЧЕБНИКАМИ ЕДИНЫМИ: КАК НАЧАТЬ ПРАКТИКУ И КАРЬЕРНЫЙ ЛИФТ -->
+    <section id="practice" class="py-10 sm:py-14 px-4 sm:px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="mb-6 sm:mb-8">
+                <span class="inline-block px-3 py-1 rounded-full bg-skySoft text-navyLight text-xs font-extrabold uppercase tracking-wider mb-3">
+                    Раздел 05 · Реальный опыт
+                </span>
+                <h2 class="font-display font-bold text-2xl sm:text-3xl text-navy mb-2">
+                    Не учебниками едиными: практика в вузе и карьерный лифт
+                </h2>
+                <p class="text-navy/75 text-sm sm:text-base max-w-2xl">
+                    На что смотреть при выборе программы, чтобы не зубрить сухую теорию, а собирать портфолио с первого курса — и как по шагам дойти до должности.
+                </p>
+            </div>
+
+            <!-- Как отличить сильную программу -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+                <div class="print-break-inside rounded-3xl bg-white p-6 sm:p-7 shadow-card border border-navy/10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-100 text-purple-900 text-xs font-extrabold mb-4">
+                        <span>🎯</span> Проектный подход
+                    </div>
+                    <h3 class="font-display font-bold text-lg sm:text-xl text-navy mb-2">
+                        Программа «Обучение служением»
+                    </h3>
+                    <p class="text-sm sm:text-base text-navy/80 leading-relaxed mb-4">
+                        Вместо абстрактных курсовых «в стол» студенты решают реальные задачи по заказу министерств, регионов и НКО. Например, студенты «РЕСУРСа России» разрабатывают кейсы для правительств субъектов и профориентационные уроки для школ.
+                    </p>
+                    <a href="https://обучениеслужением.добро.рф/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-sm font-bold text-navyLight hover:text-navy underline decoration-2 underline-offset-4">
+                        <span>Узнать об «Обучении служением»</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+
+                <div class="print-break-inside rounded-3xl bg-white p-6 sm:p-7 shadow-card border border-navy/10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-900 text-xs font-extrabold mb-4">
+                        <span>🏛️</span> Прямой контакт
+                    </div>
+                    <h3 class="font-display font-bold text-lg sm:text-xl text-navy mb-2">
+                        Базовые кафедры и встречи с первыми лицами
+                    </h3>
+                    <p class="text-sm sm:text-base text-navy/80 leading-relaxed mb-4">
+                        Ищи программы, где лекции и разборы кейсов ведут действующие практики: замминистры, руководители госкорпораций и региональных проектных офисов. Это лучший способ понять внутреннюю кухню без фильтров.
+                    </p>
+                    <span class="inline-block text-xs font-bold text-navy/60 bg-cream px-3 py-1.5 rounded-lg">
+                        Совет: проверяй раздел «Партнёры и преподаватели» на сайте вуза
+                    </span>
+                </div>
+            </div>
+
+            <!-- Мини-интерактив: Симулятор реальной управленческой задачи -->
+            <div class="print-break-inside rounded-[2rem] bg-navy text-cream p-6 sm:p-8 md:p-10 shadow-glow mb-10">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                    <span class="px-3.5 py-1 rounded-full bg-amberWarm text-navy text-xs font-extrabold uppercase tracking-wider">
+                        Мини-симулятор · Проверь управленческую логику
+                    </span>
+                    <span class="text-xs font-semibold text-skySoft">Бюджет: 8 млн ₽</span>
+                </div>
+
+                <h3 class="font-display font-bold text-xl sm:text-2xl mb-3">
+                    Попробуй себя в роли руководителя рабочей группы
+                </h3>
+                <p class="text-sm sm:text-base text-cream/85 leading-relaxed mb-6 max-w-3xl">
+                    <strong>Ситуация:</strong> Возле новой школы оживлённая дорога — утром дети идут по обочине, нет освещения и перехода. У тебя есть <strong>8 млн ₽</strong> и запрос родителей сделать путь безопасным как можно быстрее. С чего начнёшь?
+                </p>
+
+                <!-- Кнопки выбора -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 no-print" id="sim-options">
+                    <button onclick="chooseSimOption('A')" id="sim-btn-A" class="text-left p-5 rounded-2xl bg-white/10 hover:bg-white/20 border-2 border-white/15 transition-all flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block px-2.5 py-0.5 rounded bg-white/15 text-xs font-bold text-skySoft mb-2">Вариант А</span>
+                            <h4 class="font-bold text-base sm:text-lg mb-1.5">
+                                Поставить дорогой светофор с кнопкой за 4,5 млн ₽
+                            </h4>
+                            <p class="text-xs sm:text-sm text-cream/75">
+                                Максимально технологичное решение, но требует долгого проектирования, согласования и подключения сетей (около 6 месяцев).
+                            </p>
+                        </div>
+                        <span class="mt-4 text-xs font-bold text-amberWarm">Выбрать этот шаг →</span>
+                    </button>
+
+                    <button onclick="chooseSimOption('B')" id="sim-btn-B" class="text-left p-5 rounded-2xl bg-white/10 hover:bg-white/20 border-2 border-white/15 transition-all flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block px-2.5 py-0.5 rounded bg-white/15 text-xs font-bold text-skySoft mb-2">Вариант Б</span>
+                            <h4 class="font-bold text-base sm:text-lg mb-1.5">
+                                Взять связку: освещение + переход + «лежачий полицейский» + ограждение за 2,5 млн ₽
+                            </h4>
+                            <p class="text-xs sm:text-sm text-cream/75">
+                                Быстро снижает скорость машин, делает детей видимыми в темноте и оставляет 5,5 млн ₽ в бюджете на строительство тротуара.
+                            </p>
+                        </div>
+                        <span class="mt-4 text-xs font-bold text-amberWarm">Выбрать этот шаг →</span>
+                    </button>
+                </div>
+
+                <!-- Блок результата симулятора -->
+                <div id="sim-result" class="hidden mt-5 p-5 rounded-2xl bg-white text-navy animate-fade-up">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <span id="sim-result-badge" class="inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase mb-2"></span>
+                            <h4 id="sim-result-title" class="font-display font-bold text-base sm:text-lg mb-2"></h4>
+                            <p id="sim-result-text" class="text-xs sm:text-sm text-navy/85 leading-relaxed"></p>
+                        </div>
+                        <button onclick="resetSim()" class="px-3 py-1.5 rounded-xl bg-cream hover:bg-skySoft text-xs font-bold text-navy shrink-0 no-print">
+                            Сбросить
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Твой карьерный лифт: 4 шага -->
+            <div>
+                <h3 class="font-display font-bold text-xl sm:text-2xl text-navy mb-5">
+                    Твой карьерный лифт: 4 шага от школы до должности
+                </h3>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Шаг 1 -->
+                    <div class="print-break-inside rounded-3xl bg-white p-5 sm:p-6 shadow-card border border-navy/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full bg-navy text-cream text-xs font-extrabold">Шаг 1</span>
+                                <span class="text-xs font-bold text-navyLight">9–11 класс</span>
+                            </div>
+                            <h4 class="font-bold text-base text-navy mb-2">Первое знакомство и проекты</h4>
+                            <p class="text-xs sm:text-sm text-navy/80 leading-relaxed mb-4">
+                                Ходи на открытые встречи «ГосСтарт.Диалог» с молодыми госслужащими в своём регионе, участвуй в «Движении Первых» и подавай идеи на гранты с 14 лет.
+                            </p>
+                        </div>
+                        <a href="https://grants.myrosmol.ru/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-between w-full px-3.5 py-2 rounded-xl bg-cream hover:bg-skySoft text-xs font-bold text-navy transition-colors">
+                            <span>Росмолодёжь.Гранты</span>
+                            <span>↗</span>
+                        </a>
+                    </div>
+
+                    <!-- Шаг 2 -->
+                    <div class="print-break-inside rounded-3xl bg-white p-5 sm:p-6 shadow-card border border-navy/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full bg-navy text-cream text-xs font-extrabold">Шаг 2</span>
+                                <span class="text-xs font-bold text-navyLight">1–2 курс вуза</span>
+                            </div>
+                            <h4 class="font-bold text-base text-navy mb-2">Форумы и кейс-чемпионаты</h4>
+                            <p class="text-xs sm:text-sm text-navy/80 leading-relaxed mb-4">
+                                Прокачивай навыки в проектных лабораториях, участвуй в форумах («Территория смыслов», «Машук», «Таврида») и студенческом проекте «Твой Ход».
+                            </p>
+                        </div>
+                        <a href="https://tvoyhod.online/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-between w-full px-3.5 py-2 rounded-xl bg-cream hover:bg-skySoft text-xs font-bold text-navy transition-colors">
+                            <span>Проект «Твой Ход»</span>
+                            <span>↗</span>
+                        </a>
+                    </div>
+
+                    <!-- Шаг 3 -->
+                    <div class="print-break-inside rounded-3xl bg-white p-5 sm:p-6 shadow-card border border-navy/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full bg-navy text-cream text-xs font-extrabold">Шаг 3</span>
+                                <span class="text-xs font-bold text-navyLight">3–4 курс вуза</span>
+                            </div>
+                            <h4 class="font-bold text-base text-navy mb-2">Стажировка в органах власти</h4>
+                            <p class="text-xs sm:text-sm text-navy/80 leading-relaxed mb-4">
+                                Подавай заявку на программу «ГосСтарт.Стажировки» — это возможность поработать в федеральных министерствах и региональных ведомствах с личным наставником.
+                            </p>
+                        </div>
+                        <a href="https://госстарт.рф/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-between w-full px-3.5 py-2 rounded-xl bg-cream hover:bg-skySoft text-xs font-bold text-navy transition-colors">
+                            <span>Портал «ГосСтарт»</span>
+                            <span>↗</span>
+                        </a>
+                    </div>
+
+                    <!-- Шаг 4 -->
+                    <div class="print-break-inside rounded-3xl bg-white p-5 sm:p-6 shadow-card border border-navy/10 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3 py-1 rounded-full bg-emeraldSoft text-white text-xs font-extrabold">Шаг 4</span>
+                                <span class="text-xs font-bold text-navyLight">Выпуск и старт</span>
+                            </div>
+                            <h4 class="font-bold text-base text-navy mb-2">Конкурс на должность или резерв</h4>
+                            <p class="text-xs sm:text-sm text-navy/80 leading-relaxed mb-4">
+                                Проходи открытый конкурс на должность государственной гражданской службы или попадай в молодёжный кадровый резерв через единый портал.
+                            </p>
+                        </div>
+                        <a href="https://gossluzhba.gov.ru/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-between w-full px-3.5 py-2 rounded-xl bg-cream hover:bg-skySoft text-xs font-bold text-navy transition-colors">
+                            <span>Портал «Госслужба»</span>
+                            <span>↗</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. ИНТЕРАКТИВНЫЙ ЧЕК-ЛИСТ «ТВОЙ ПЛАН ДЕЙСТВИЙ НА БЛИЖАЙШИЙ ГОД» -->
+    <section id="checklist" class="py-10 sm:py-16 px-4 sm:px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="rounded-[2rem] bg-white p-6 sm:p-10 shadow-soft border border-navy/10">
+                <!-- Шапка чек-листа и шкала прогресса -->
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 mb-6 border-b border-navy/10">
+                    <div>
+                        <span class="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-extrabold uppercase tracking-wider mb-3">
+                            Раздел 06 · Действуй сейчас
+                        </span>
+                        <h2 class="font-display font-bold text-2xl sm:text-3xl text-navy mb-2">
+                            Твой план действий на ближайший год
+                        </h2>
+                        <p class="text-navy/75 text-sm sm:text-base">
+                            Отмечай выполненные пункты — прогресс автоматически сохраняется в твоём браузере.
+                        </p>
+                    </div>
+
+                    <!-- Виджет прогресса -->
+                    <div class="w-full lg:w-80 rounded-2xl bg-cream p-4 border border-navy/10 shrink-0">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-navy/70">Твой статус:</span>
+                            <span id="rank-badge" class="px-2.5 py-0.5 rounded-full bg-navy text-cream text-xs font-extrabold">
+                                Новичок
+                            </span>
+                        </div>
+                        <div class="w-full h-3 rounded-full bg-navy/10 overflow-hidden mb-2">
+                            <div id="progress-bar" class="h-full bg-navyLight rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs font-bold text-navy">
+                            <span>Готовность к старту</span>
+                            <span id="progress-counter">0 из 7</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Список из 7 кликабельных шагов -->
+                <div class="space-y-3 mb-8" id="checklist-items">
+                    <!-- Пункт 1 -->
+                    <label class="print-break-inside flex items-start gap-3.5 p-4 rounded-2xl bg-cream/60 hover:bg-cream border border-navy/10 cursor-pointer transition-all select-none">
+                        <input type="checkbox" class="custom-checkbox sr-only" data-step="1" onchange="updateChecklist()">
+                        <div class="w-6 h-6 rounded-lg border-2 border-navy/30 bg-white flex items-center justify-center shrink-0 mt-0.5 transition-colors">
+                            <svg class="w-4 h-4 text-white opacity-0 transform scale-75 transition-all" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <span class="text-sm sm:text-base text-navy font-medium leading-snug">
+                            <strong>Определиться со своим треком</strong> (Люди / Цифра / Медиа / Право) и выбрать подходящую комбинацию ЕГЭ.
+                        </span>
+                    </label>
+
+                    <!-- Пункт 2 -->
+                    <label class="print-break-inside flex items-start gap-3.5 p-4 rounded-2xl bg-cream/60 hover:bg-cream border border-navy/10 cursor-pointer transition-all select-none">
+                        <input type="checkbox" class="custom-checkbox sr-only" data-step="2" onchange="updateChecklist()">
+                        <div class="w-6 h-6 rounded-lg border-2 border-navy/30 bg-white flex items-center justify-center shrink-0 mt-0.5 transition-colors">
+                            <svg class="w-4 h-4 text-white opacity-0 transform scale-75 transition-all" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <span class="text-sm sm:text-base text-navy font-medium leading-snug">
+                            <strong>Зарегистрироваться на <a href="https://dobro.ru/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="underline decoration-navyLight font-bold text-navyLight hover:text-navy">Добро.рф</a></strong> и завести электронную книжку волонтёра, чтобы копить верифицированные часы для доп. баллов к ЕГЭ.
+                        </span>
+                    </label>
+
+                    <!-- Пункт 3 -->
+                    <label class="print-break-inside flex items-start gap-3.5 p-4 rounded-2xl bg-cream/60 hover:bg-cream border border-navy/10 cursor-pointer transition-all select-none">
+                        <input type="checkbox" class="custom-checkbox sr-only" data-step="3" onchange="updateChecklist()">
+                        <div class="w-6 h-6 rounded-lg border-2 border-navy/30 bg-white flex items-center justify-center shrink-0 mt-0.5 transition-colors">
+                            <svg class="w-4 h-4 text-white opacity-0 transform scale-75 transition-all" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <span class="text-sm sm:text-base text-navy font-medium leading-snug">
+                            <strong>Выбрать 2–3 профильные олимпиады</strong> из перечня РСОШ («Высшая проба», Олимпиада РАНХиГС, «Ломоносов» и др.) и зарегистрироваться на отборочные этапы осенью.
+                        </span>
+                    </label>
+
+                    <!-- Пункт 4 -->
+                    <label class="print-break-inside flex items-start gap-3.5 p-4 rounded-2xl bg-cream/60 hover:bg-cream border border-navy/10 cursor-pointer transition-all select-none">
+                        <input type="checkbox" class="custom-checkbox sr-only" data-step="4" onchange="updateChecklist()">
+                        <div class="w-6 h-6 rounded-lg border-2 border-navy/30 bg-white flex items-center justify-center shrink-0 mt-0.5 transition-colors">
+                            <svg class="w-4 h-4 text-white opacity-0 transform scale-75 transition-all" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <span class="text-sm sm:text-base text-navy font-medium leading-snug">
+                            <strong>Подписаться на ресурсы «ГосСтарта»</strong> (<a href="https://госстарт.рф/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="underline decoration-navyLight font-bold text-navyLight hover:text-navy">госстарт.рф</a> и <a href="https://t.me/gos_start" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="underline decoration-navyLight font-bold text-navyLight hover:text-navy">Telegram-канал</a>), чтобы не пропустить встречи «ГосСтарт.Диалог» в своём городе.
+                        </span>
+                    </label>
+
+                    <!-- Пункт 5 -->
+                    <label class="print-break-inside flex items-start gap-3.5 p-4 rounded-2xl bg-cream/60 hover:bg-cream border border-navy/10 cursor-pointer transition-all select-none">
+                        <input type="checkbox" class="custom-checkbox sr-only" data-step="5" onchange="updateChecklist()">
+                        <div class="w-6 h-6 rounded-lg border-2 border-navy/30 bg-white flex items-center justify-center shrink-0 mt-0.5 transition-colors">
+                            <svg class="w-4 h-4 text-white opacity-0 transform scale-75 transition-all" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <span class="text-sm sm:text-base text-navy font-medium leading-snug">
+                            <strong>Изучить сайты 3–5 целевых программ в вузах</strong> и сходить на День открытых дверей (очно или онлайн).
+                        </span>
+                    </label>
+
+                    <!-- Пункт 6 -->
+                    <label class="print-break-inside flex items-start gap-3.5 p-4 rounded-2xl bg-cream/60 hover:bg-cream border border-navy/10 cursor-pointer transition-all select-none">
+                        <input type="checkbox" class="custom-checkbox sr-only" data-step="6" onchange="updateChecklist()">
+                        <div class="w-6 h-6 rounded-lg border-2 border-navy/30 bg-white flex items-center justify-center shrink-0 mt-0.5 transition-colors">
+                            <svg class="w-4 h-4 text-white opacity-0 transform scale-75 transition-all" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <span class="text-sm sm:text-base text-navy font-medium leading-snug">
+                            <strong>Попробовать себя в школьном самоуправлении</strong>, социальном проектировании или подать первую идею на <a href="https://grants.myrosmol.ru/" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="underline decoration-navyLight font-bold text-navyLight hover:text-navy">Росмолодёжь.Гранты</a>.
+                        </span>
+                    </label>
+
+                    <!-- Пункт 7 -->
+                    <label class="print-break-inside flex items-start gap-3.5 p-4 rounded-2xl bg-cream/60 hover:bg-cream border border-navy/10 cursor-pointer transition-all select-none">
+                        <input type="checkbox" class="custom-checkbox sr-only" data-step="7" onchange="updateChecklist()">
+                        <div class="w-6 h-6 rounded-lg border-2 border-navy/30 bg-white flex items-center justify-center shrink-0 mt-0.5 transition-colors">
+                            <svg class="w-4 h-4 text-white opacity-0 transform scale-75 transition-all" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <span class="text-sm sm:text-base text-navy font-medium leading-snug">
+                            <strong>Выбрать направление для первой стажировки мечты</strong> — федеральное министерство или правительство своего региона.
+                        </span>
+                    </label>
+                </div>
+
+                <!-- Кнопки управления чек-листом и печати -->
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-navy/10 no-print">
+                    <button onclick="resetChecklist()" class="px-4 py-2.5 rounded-xl bg-cream hover:bg-rose-50 text-navy/75 hover:text-rose-700 text-xs sm:text-sm font-bold transition-colors">
+                        Сбросить отметки
+                    </button>
+
+                    <button onclick="window.print()" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-navy hover:bg-navyLight text-cream text-xs sm:text-sm font-bold shadow-sm transition-all">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                        </svg>
+                        <span>Распечатать / Сохранить в PDF</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ФУТЕР С ПОЛЕЗНЫМИ ПОРТАЛАМИ -->
+    <footer class="pb-12 pt-4 px-4 sm:px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="rounded-3xl bg-navy text-cream p-6 sm:p-8 border border-white/10">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-6 pb-6 border-b border-white/15">
+                    <div class="max-w-xl">
+                        <span class="inline-block text-xs font-extrabold uppercase tracking-wider text-amberWarm mb-2">
+                            Официальные порталы для старта
+                        </span>
+                        <p class="text-sm sm:text-base text-cream/90 leading-relaxed">
+                            Подготовлено командой студентов программы <strong>«РЕСУРС России» (РАНХиГС)</strong> в рамках проекта <strong>«Уроки госслужбы»</strong> для программы <strong>«ГосСтарт»</strong>.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Кликабельные кнопки на официальные порталы -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <a href="https://госстарт.рф/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
+                        <div>
+                            <span class="block text-xs text-skySoft font-semibold">Стажировки и диалог</span>
+                            <span class="font-bold text-sm text-white">Портал «ГосСтарт»</span>
+                        </div>
+                        <span class="text-amberWarm font-bold group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
+                    </a>
+
+                    <a href="https://dobro.ru/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
+                        <div>
+                            <span class="block text-xs text-skySoft font-semibold">Книжка волонтёра</span>
+                            <span class="font-bold text-sm text-white">Платформа Добро.рф</span>
+                        </div>
+                        <span class="text-amberWarm font-bold group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
+                    </a>
+
+                    <a href="https://gossluzhba.gov.ru/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
+                        <div>
+                            <span class="block text-xs text-skySoft font-semibold">Вакансии и конкурсы</span>
+                            <span class="font-bold text-sm text-white">Портал Госслужбы</span>
+                        </div>
+                        <span class="text-amberWarm font-bold group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
+                    </a>
+
+                    <a href="https://www.ranepa.ru/bakalavriat/napravleniya-i-programmy/018789/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
+                        <div>
+                            <span class="block text-xs text-skySoft font-semibold">Бакалавриат РАНХиГС</span>
+                            <span class="font-bold text-sm text-white">РЕСУРС России</span>
+                        </div>
+                        <span class="text-amberWarm font-bold group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ИНТЕРАКТИВНАЯ ЛОГИКА НА JAVASCRIPT -->
+    <script>
+        // 1. Вкладки уровней власти
+        function selectPowerTab(selected) {
+            const tabs = ['all', 'federal', 'regional', 'municipal'];
+            tabs.forEach(tab => {
+                const btn = document.getElementById(`power-tab-${tab}`);
+                if (tab === selected) {
+                    btn.className = 'tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-navy text-cream shadow-sm';
+                } else {
+                    btn.className = 'tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white text-navy hover:bg-skySoft/60 border border-navy/10';
+                }
+            });
+
+            const cards = document.querySelectorAll('.power-card');
+            const grid = document.getElementById('power-cards-grid');
+
+            if (selected === 'all') {
+                grid.className = 'grid grid-cols-1 md:grid-cols-3 gap-5';
+                cards.forEach(card => {
+                    card.classList.remove('hidden');
+                    card.classList.add('animate-fade-up');
+                });
+            } else {
+                grid.className = 'grid grid-cols-1 max-w-2xl gap-5';
+                cards.forEach(card => {
+                    if (card.dataset.power === selected) {
+                        card.classList.remove('hidden');
+                        card.classList.add('animate-fade-up');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            }
+        }
+
+        // 2. Карточки Мифы vs Реальность
+        const mythStates = { 1: false, 2: false, 3: false };
+
+        function flipMyth(id, forceState = null) {
+            mythStates[id] = forceState !== null ? forceState : !mythStates[id];
+            const card = document.getElementById(`myth-card-${id}`);
+            const front = document.getElementById(`myth-front-${id}`);
+            const back = document.getElementById(`myth-back-${id}`);
+
+            if (mythStates[id]) {
+                card.classList.remove('bg-white', 'border-navy/10');
+                card.classList.add('bg-navy', 'border-navy');
+                front.classList.add('hidden');
+                back.classList.remove('hidden');
+                back.classList.add('flex');
+            } else {
+                card.classList.remove('bg-navy', 'border-navy');
+                card.classList.add('bg-white', 'border-navy/10');
+                back.classList.add('hidden');
+                back.classList.remove('flex');
+                front.classList.remove('hidden');
+            }
+            updateToggleAllMythsButton();
+        }
+
+        function toggleAllMyths() {
+            const anyClosed = Object.values(mythStates).some(state => !state);
+            [1, 2, 3].forEach(id => flipMyth(id, anyClosed));
+        }
+
+        function updateToggleAllMythsButton() {
+            const btn = document.getElementById('toggle-all-myths-btn');
+            const allOpen = Object.values(mythStates).every(state => state);
+            btn.textContent = allOpen ? 'Свернуть все обратно' : 'Раскрыть все факты';
+        }
+
+        // 3. Фильтр 4 треков профессий
+        function filterTracks(track) {
+            const buttons = ['all', 'people', 'digital', 'media', 'law'];
+            buttons.forEach(b => {
+                const btn = document.getElementById(`track-btn-${b}`);
+                if (b === track) {
+                    btn.className = 'tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-navy text-cream shadow-sm';
+                } else {
+                    btn.className = 'tab-btn px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold bg-white text-navy hover:bg-skySoft/60 border border-navy/10';
+                }
+            });
+
+            const cards = document.querySelectorAll('.track-card');
+            const grid = document.getElementById('tracks-grid');
+
+            if (track === 'all') {
+                grid.className = 'grid grid-cols-1 md:grid-cols-2 gap-5';
+                cards.forEach(c => {
+                    c.classList.remove('hidden');
+                    c.classList.add('animate-fade-up');
+                });
+            } else {
+                grid.className = 'grid grid-cols-1 max-w-2xl gap-5';
+                cards.forEach(c => {
+                    if (c.dataset.track === track) {
+                        c.classList.remove('hidden');
+                        c.classList.add('animate-fade-up');
+                    } else {
+                        c.classList.add('hidden');
+                    }
+                });
+            }
+        }
+
+        // 4. Мини-симулятор управленческого решения
+        function chooseSimOption(option) {
+            const resultBox = document.getElementById('sim-result');
+            const badge = document.getElementById('sim-result-badge');
+            const title = document.getElementById('sim-result-title');
+            const text = document.getElementById('sim-result-text');
+            const btnA = document.getElementById('sim-btn-A');
+            const btnB = document.getElementById('sim-btn-B');
+
+            resultBox.classList.remove('hidden');
+
+            if (option === 'A') {
+                btnA.classList.add('border-amberWarm', 'bg-white/20');
+                btnB.classList.remove('border-emeraldSoft', 'bg-white/20');
+                badge.className = 'inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase mb-2 bg-amber-100 text-amber-900';
+                badge.textContent = 'Разбор выбора А · Риск долгого ожидания';
+                title.textContent = 'Решение надёжное, но дети будут ходить в темноте ещё полгода';
+                text.textContent = 'Светофор с кнопкой забирает больше половины бюджета и требует длительных согласований и подключения к электросетям. На госслужбе важно сочетать капитальные меры с быстрыми действиями, которые защитят людей уже в этом месяце.';
+            } else {
+                btnB.classList.add('border-emeraldSoft', 'bg-white/20');
+                btnA.classList.remove('border-amberWarm', 'bg-white/20');
+                badge.className = 'inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase mb-2 bg-emerald-100 text-emerald-900';
+                badge.textContent = 'Разбор выбора Б · Системный подход';
+                title.textContent = 'Отличная управленческая логика: быстрый эффект + резерв на развитие!';
+                text.textContent = 'Ты сразу закрываешь главные риски (скорость машин и видимость пешеходов в темноте) за 2,5 млн ₽, а оставшиеся 5,5 млн ₽ можешь направить на строительство полноценного тротуара с удобными съездами для колясок и маломобильных жителей.';
+            }
+        }
+
+        function resetSim() {
+            document.getElementById('sim-result').classList.add('hidden');
+            document.getElementById('sim-btn-A').classList.remove('border-amberWarm', 'bg-white/20');
+            document.getElementById('sim-btn-B').classList.remove('border-emeraldSoft', 'bg-white/20');
+        }
+
+        // 5. Интерактивный чек-лист с сохранением в localStorage
+        const STORAGE_KEY = 'gosstart_guide_checklist_v1';
+
+        function loadChecklist() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+                const checkboxes = document.querySelectorAll('#checklist-items input[type="checkbox"]');
+                checkboxes.forEach(cb => {
+                    if (saved[cb.dataset.step]) {
+                        cb.checked = true;
+                    }
+                });
+            } catch (e) {
+                // Игнорируем ошибки доступа к localStorage в изолированных режимах
+            }
+            updateChecklist(false);
+        }
+
+        function updateChecklist(save = true) {
+            const checkboxes = document.querySelectorAll('#checklist-items input[type="checkbox"]');
+            const total = checkboxes.length;
+            let checkedCount = 0;
+            const state = {};
+
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    checkedCount++;
+                    state[cb.dataset.step] = true;
+                }
+            });
+
+            if (save) {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                } catch (e) {}
+            }
+
+            const percent = Math.round((checkedCount / total) * 100);
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+            document.getElementById('progress-counter').textContent = `${checkedCount} из ${total}`;
+
+            const badge = document.getElementById('rank-badge');
+            if (checkedCount === 0) {
+                badge.textContent = 'Новичок';
+                badge.className = 'px-2.5 py-0.5 rounded-full bg-navy text-cream text-xs font-extrabold';
+            } else if (checkedCount <= 3) {
+                badge.textContent = 'На старте';
+                badge.className = 'px-2.5 py-0.5 rounded-full bg-navyLight text-cream text-xs font-extrabold';
+            } else if (checkedCount <= 6) {
+                badge.textContent = 'Будущий абитуриент';
+                badge.className = 'px-2.5 py-0.5 rounded-full bg-amberWarm text-navy text-xs font-extrabold';
+            } else {
+                badge.textContent = 'Почти в команде!';
+                badge.className = 'px-2.5 py-0.5 rounded-full bg-emeraldSoft text-white text-xs font-extrabold';
+            }
+        }
+
+        function resetChecklist() {
+            const checkboxes = document.querySelectorAll('#checklist-items input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = false);
+            try {
+                localStorage.removeItem(STORAGE_KEY);
+            } catch (e) {}
+            updateChecklist(false);
+        }
+
+        // Инициализация при загрузке страницы
+        window.addEventListener('DOMContentLoaded', () => {
+            loadChecklist();
+        });
+    </script>
+</body>
+</html>
